@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RideWay - Car Booking Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1200') center/cover;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.2s;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #ffd700;
+            color: #333;
+        }
+
+        .btn-primary:hover {
+            background: #ffed4e;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,215,0,0.3);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Cars Section */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .car-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .car-info {
+            padding: 1.5rem;
+        }
+
+        .car-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .car-details {
+            color: #666;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .car-price {
+            font-size: 1.8rem;
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* Booking Form */
+        .booking-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Admin Dashboard */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1rem;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 2rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            background: #f3f4f6;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-bar {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            width: 300px;
+            font-size: 1rem;
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 15px;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 3000;
+            animation: slideIn 0.3s;
+            display: none;
+        }
+
+        .toast.active {
+            display: block;
+        }
+
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        /* Login Page */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #ffd700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ffd700;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: #374151;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: #ffd700;
+            color: #333;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #667eea;
+                flex-direction: column;
+                padding: 1rem;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .admin-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .contact-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Main Application Container -->
+    <div id="app"></div>
+
+    <script>
+        // ============================================
+        // DATA MANAGEMENT (LocalStorage)
+        // ============================================
+        class DataManager {
+            static getCars() {
+                const cars = localStorage.getItem('cars');
+                if (!cars) {
+                    const defaultCars = [
+                        {
+                            id: 1,
+                            name: 'Tesla Model 3',
+                            model: '2024',
+                            price: 89,
+                            seats: 5,
+                            image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=400'
+                        },
+                        {
+                            id: 2,
+                            name: 'BMW X5',
+                            model: '2024',
+                            price: 120,
+                            seats: 7,
+                            image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400'
+                        },
+                        {
+                            id: 3,
+                            name: 'Mercedes E-Class',
+                            model: '2024',
+                            price: 95,
+                            seats: 5,
+                            image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400'
+                        },
+                        {
+                            id: 4,
+                            name: 'Audi Q7',
+                            model: '2024',
+                            price: 110,
+                            seats: 7,
+                            image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400'
+                        },
+                        {
+                            id: 5,
+                            name: 'Toyota Camry',
+                            model: '2024',
+                            price: 65,
+                            seats: 5,
+                            image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=400'
+                        },
+                        {
+                            id: 6,
+                            name: 'Range Rover',
+                            model: '2024',
+                            price: 150,
+                            seats: 5,
+                            image: 'https://images.unsplash.com/photo-1606220945770-b5b6c2c2bf93?w=400'
+                        }
+                    ];
+                    localStorage.setItem('cars', JSON.stringify(defaultCars));
+                    return defaultCars;
+                }
+                return JSON.parse(cars);
+            }
+
+            static saveCars(cars) {
+                localStorage.setItem('cars', JSON.stringify(cars));
+            }
+
+            static getBookings() {
+                const bookings = localStorage.getItem('bookings');
+                return bookings ? JSON.parse(bookings) : [];
+            }
+
+            static saveBookings(bookings) {
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+            }
+
+            static getUsers() {
+                const users = localStorage.getItem('users');
+                if (!users) {
+                    const defaultUsers = [
+                        { id: 1, username: 'admin', password: 'admin123', role: 'admin' }
+                    ];
+                    localStorage.setItem('users', JSON.stringify(defaultUsers));
+                    return defaultUsers;
+                }
+                return JSON.parse(users);
+            }
+
+            static saveUsers(users) {
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            static getCurrentUser() {
+                const user = sessionStorage.getItem('currentUser');
+                return user ? JSON.parse(user) : null;
+            }
+
+            static setCurrentUser(user) {
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+            }
+
+            static logout() {
+                sessionStorage.removeItem('currentUser');
+            }
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} active`;
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+        }
+
+        function generateId() {
+            return Date.now() + Math.random();
+        }
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // ============================================
+        // ROUTING SYSTEM
+        // ============================================
+        class Router {
+            static navigate(page) {
+                window.location.hash = page;
+                this.render();
+            }
+
+            static render() {
+                const hash = window.location.hash.slice(1) || 'home';
+                const app = document.getElementById('app');
+                
+                const currentUser = DataManager.getCurrentUser();
+                
+                if (hash.startsWith('admin')) {
+                    if (!currentUser) {
+                        app.innerHTML = LoginPage.render();
+                        LoginPage.init();
+                        return;
+                    }
+                    
+                    switch(hash) {
+                        case 'admin-dashboard':
+                            app.innerHTML = AdminDashboard.render();
+                            AdminDashboard.init();
+                            break;
+                        case 'admin-cars':
+                            app.innerHTML = AdminCars.render();
+                            AdminCars.init();
+                            break;
+                        case 'admin-bookings':
+                            app.innerHTML = AdminBookings.render();
+                            AdminBookings.init();
+                            break;
+                        case 'admin-users':
+                            app.innerHTML = AdminUsers.render();
+                            AdminUsers.init();
+                            break;
+                        default:
+                            app.innerHTML = AdminDashboard.render();
+                            AdminDashboard.init();
+                    }
+                } else {
+                    switch(hash) {
+                        case 'home':
+                            app.innerHTML = HomePage.render();
+                            HomePage.init();
+                            break;
+                        case 'booking':
+                            app.innerHTML = BookingPage.render();
+                            BookingPage.init();
+                            break;
+                        case 'about':
+                            app.innerHTML = AboutPage.render();
+                            break;
+                        case 'contact':
+                            app.innerHTML = ContactPage.render();
+                            ContactPage.init();
+                            break;
+                        default:
+                            app.innerHTML = HomePage.render();
+                            HomePage.init();
+                    }
+                }
+            }
+        }
+
+        // ============================================
+        // PUBLIC PAGES
+        // ============================================
+        class HomePage {
+            static render() {
+                const cars = DataManager.getCars();
+                return `
+                    <nav>
+                        <div class="nav-container">
+                            <div class="logo"><i class="fas fa-car"></i> RideWay</div>
+                            <div class="hamburger" onclick="toggleMenu()">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <ul class="nav-links">
+                                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                                <li><a href="#booking"><i class="fas fa-calendar-check"></i> Book Now</a></li>
+                                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                                <li><a href="#admin-dashboard"><i class="fas fa-user-shield"></i> Admin</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="hero">
+                        <div class="hero-content">
+                            <h1>Find Your Perfect Ride</h1>
+                            <p>Premium car rentals at unbeatable prices</p>
+                            <a href="#booking" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Book a Ride Now</a>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <h2 class="section-title">Our Premium Fleet</h2>
+                        <div class="cars-grid">
+                            ${cars.map(car => `
+                                <div class="car-card">
+                                    <img src="${car.image}" alt="${car.name}" class="car-image">
+                                    <div class="car-info">
+                                        <div class="car-name">${car.name}</div>
+                                        <div class="car-details">
+                                            <span><i class="fas fa-cog"></i> ${car.model}</span>
+                                            <span><i class="fas fa-users"></i> ${car.seats} Seats</span>
+                                        </div>
+                                        <div class="car-price">$${car.price}/day</div>
+                                        <button class="btn btn-primary" onclick="Router.navigate('booking')">
+                                            <i class="fas fa-calendar-check"></i> Book Now
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+
+                    ${this.renderFooter()}
+                `;
+            }
+
+            static renderFooter() {
+                return `
+                    <footer>
+                        <div class="footer-content">
+                            <div class="footer-section">
+                                <h3><i class="fas fa-car"></i> RideWay</h3>
+                                <p>Your trusted partner for premium car rentals since 2015.</p>
+                                <div class="social-icons">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                            <div class="footer-section">
+                                <h3>Quick Links</h3>
+                                <ul>
+                                    <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                                    <li><a href="#booking"><i class="fas fa-chevron-right"></i> Book a Car</a></li>
+                                    <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                                    <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-section">
+                                <h3>Contact Info</h3>
+                                <ul>
+                                    <li><i class="fas fa-map-marker-alt"></i> 123 Main Street, City</li>
+                                    <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                                    <li><i class="fas fa-envelope"></i> info@rideway.com</li>
+                                    <li><i class="fas fa-clock"></i> Mon-Sun: 24/7</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="footer-bottom">
+                            <p>&copy; 2024 RideWay Car Rentals. All rights reserved.</p>
+                        </div>
+                    </footer>
+                `;
+            }
+
+            static init() {}
+        }
+
+        class BookingPage {
+            static render() {
+                const cars = DataManager.getCars();
+                return `
+                    <nav>
+                        <div class="nav-container">
+                            <div class="logo"><i class="fas fa-car"></i> RideWay</div>
+                            <ul class="nav-links">
+                                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                                <li><a href="#booking"><i class="fas fa-calendar-check"></i> Book Now</a></li>
+                                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                                <li><a href="#admin-dashboard"><i class="fas fa-user-shield"></i> Admin</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="section">
+                        <h2 class="section-title">Book Your Car</h2>
+                        <form class="booking-form" id="bookingForm">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Your Name</label>
+                                <input type="text" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-phone"></i> Phone Number</label>
+                                <input type="tel" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-car"></i> Select Car</label>
+                                <select name="carId" required>
+                                    <option value="">Choose a car...</option>
+                                    ${cars.map(car => `
+                                        <option value="${car.id}">${car.name} - $${car.price}/day</option>
+                                    `).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar-alt"></i> Pickup Date</label>
+                                <input type="date" name="pickupDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar-alt"></i> Return Date</label>
+                                <input type="date" name="returnDate" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-check-circle"></i> Confirm Booking
+                            </button>
+                        </form>
+                    </section>
+
+                    ${HomePage.renderFooter()}
+                `;
+            }
+
+            static init() {
+                const form = document.getElementById('bookingForm');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const cars = DataManager.getCars();
+                    const selectedCar = cars.find(c => c.id == formData.get('carId'));
+                    
+                    const booking = {
+                        id: generateId(),
+                        name: formData.get('name'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        carId: formData.get('carId'),
+                        carName: selectedCar ? selectedCar.name : 'Unknown',
+                        pickupDate: formData.get('pickupDate'),
+                        returnDate: formData.get('returnDate'),
+                        status: 'pending',
+                        createdAt: new Date().toISOString()
+                    };
+
+                    const bookings = DataManager.getBookings();
+                    bookings.push(booking);
+                    DataManager.saveBookings(bookings);
+
+                    showToast('Booking confirmed successfully!', 'success');
+                    form.reset();
+                    setTimeout(() => Router.navigate('home'), 2000);
+                });
+
+                const today = new Date().toISOString().split('T')[0];
+                form.querySelector('[name="pickupDate"]').min = today;
+                form.querySelector('[name="returnDate"]').min = today;
+            }
+        }
+
+        class AboutPage {
+            static render() {
+                return `
+                    <nav>
+                        <div class="nav-container">
+                            <div class="logo"><i class="fas fa-car"></i> RideWay</div>
+                            <ul class="nav-links">
+                                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                                <li><a href="#booking"><i class="fas fa-calendar-check"></i> Book Now</a></li>
+                                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                                <li><a href="#admin-dashboard"><i class="fas fa-user-shield"></i> Admin</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="section">
+                        <h2 class="section-title">About RideWay</h2>
+                        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                            <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+                                Welcome to RideWay, your premier car rental service. We've been providing 
+                                quality vehicles and exceptional customer service since 2015.
+                            </p>
+                            <h3 style="color: #667eea; margin: 2rem 0;">Our Mission</h3>
+                            <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                                To provide safe, reliable, and affordable transportation solutions 
+                                that exceed our customers' expectations.
+                            </p>
+                            <h3 style="color: #667eea; margin: 2rem 0;">Why Choose Us?</h3>
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-dollar-sign"></i></div>
+                                    <h3>Best Prices</h3>
+                                    <p>Competitive rates with no hidden fees</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-car-side"></i></div>
+                                    <h3>Premium Fleet</h3>
+                                    <p>Well-maintained luxury vehicles</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                                    <h3>24/7 Support</h3>
+                                    <p>Always here to help you</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                                    <h3>Fully Insured</h3>
+                                    <p>Complete coverage for peace of mind</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    ${HomePage.renderFooter()}
+                `;
+            }
+        }
+
+        class ContactPage {
+            static render() {
+                return `
+                    <nav>
+                        <div class="nav-container">
+                            <div class="logo"><i class="fas fa-car"></i> RideWay</div>
+                            <ul class="nav-links">
+                                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                                <li><a href="#booking"><i class="fas fa-calendar-check"></i> Book Now</a></li>
+                                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                                <li><a href="#admin-dashboard"><i class="fas fa-user-shield"></i> Admin</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section class="section">
+                        <h2 class="section-title">Contact Us</h2>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h3>Address</h3>
+                                <p>123 Main Street<br>City, State 12345</p>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <h3>Phone</h3>
+                                <p>+1 234 567 8900</p>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <h3>Email</h3>
+                                <p>info@rideway.com</p>
+                            </div>
+                        </div>
+
+                        <form class="booking-form" id="contactForm" style="margin-top: 3rem;">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Name</label>
+                                <input type="text" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-comment"></i> Message</label>
+                                <textarea name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
+                    </section>
+
+                    ${HomePage.renderFooter()}
+                `;
+            }
+
+            static init() {
+                const form = document.getElementById('contactForm');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showToast('Message sent successfully! We will get back to you soon.', 'success');
+                    form.reset();
+                });
+            }
+        }
+
+        // ============================================
+        // ADMIN PAGES
+        // ============================================
+        class LoginPage {
+            static render() {
+                return `
+                    <div class="login-container">
+                        <div class="login-box">
+                            <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
+                            <form id="loginForm" class="booking-form" style="box-shadow: none; padding: 0;">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> Username</label>
+                                    <input type="text" name="username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-lock"></i> Password</label>
+                                    <input type="password" name="password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </button>
+                                <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                                    Default: admin / admin123
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static init() {
+                const form = document.getElementById('loginForm');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const username = formData.get('username');
+                    const password = formData.get('password');
+                    
+                    const users = DataManager.getUsers();
+                    const user = users.find(u => u.username === username && u.password === password);
+                    
+                    if (user) {
+                        DataManager.setCurrentUser(user);
+                        showToast('Login successful!', 'success');
+                        setTimeout(() => Router.navigate('admin-dashboard'), 1000);
+                    } else {
+                        showToast('Invalid credentials!', 'error');
+                    }
+                });
+            }
+        }
+
+        class AdminDashboard {
+            static render() {
+                const cars = DataManager.getCars();
+                const bookings = DataManager.getBookings();
+                const users = DataManager.getUsers();
+                const pendingBookings = bookings.filter(b => b.status === 'pending').length;
+
+                return `
+                    <div class="admin-container">
+                        ${this.renderSidebar('admin-dashboard')}
+                        <div class="admin-content">
+                            <div class="admin-header">
+                                <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                                <button class="btn btn-danger" onclick="AdminDashboard.logout()">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fas fa-car"></i></div>
+                                    <div class="stat-number">${cars.length}</div>
+                                    <div class="stat-label">Total Cars</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                                    <div class="stat-number">${bookings.length}</div>
+                                    <div class="stat-label">Total Bookings</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                                    <div class="stat-number">${pendingBookings}</div>
+                                    <div class="stat-label">Pending</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                                    <div class="stat-number">${users.length}</div>
+                                    <div class="stat-label">Users</div>
+                                </div>
+                            </div>
+
+                            <h2 style="margin: 2rem 0 1rem;">Recent Bookings</h2>
+                            <div class="data-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Customer</th>
+                                            <th>Car</th>
+                                            <th>Pickup Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${bookings.slice(-5).reverse().map(booking => `
+                                            <tr>
+                                                <td>${booking.name}</td>
+                                                <td>${booking.carName}</td>
+                                                <td>${booking.pickupDate}</td>
+                                                <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static renderSidebar(active) {
+                return `
+                    <div class="sidebar">
+                        <h2><i class="fas fa-user-shield"></i> Admin Panel</h2>
+                        <ul>
+                            <li><a href="#admin-dashboard" class="${active === 'admin-dashboard' ? 'active' : ''}">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a></li>
+                            <li><a href="#admin-cars" class="${active === 'admin-cars' ? 'active' : ''}">
+                                <i class="fas fa-car"></i> Manage Cars
+                            </a></li>
+                            <li><a href="#admin-bookings" class="${active === 'admin-bookings' ? 'active' : ''}">
+                                <i class="fas fa-calendar-check"></i> Manage Bookings
+                            </a></li>
+                            <li><a href="#admin-users" class="${active === 'admin-users' ? 'active' : ''}">
+                                <i class="fas fa-users"></i> Manage Users
+                            </a></li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            static init() {}
+
+            static logout() {
+                DataManager.logout();
+                showToast('Logged out successfully', 'success');
+                setTimeout(() => Router.navigate('home'), 1000);
+            }
+        }
+
+        class AdminCars {
+            static render() {
+                const cars = DataManager.getCars();
+                return `
+                    <div class="admin-container">
+                        ${AdminDashboard.renderSidebar('admin-cars')}
+                        <div class="admin-content">
+                            <div class="admin-header">
+                                <h1><i class="fas fa-car"></i> Manage Cars</h1>
+                                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                    <input type="text" id="searchCars" class="search-bar" placeholder="Search cars...">
+                                    <button class="btn btn-success" onclick="AdminCars.showAddModal()">
+                                        <i class="fas fa-plus"></i> Add New Car
+                                    </button>
+                                    <button class="btn btn-danger" onclick="AdminDashboard.logout()">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="data-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Model</th>
+                                            <th>Price/Day</th>
+                                            <th>Seats</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="carsTableBody">
+                                        ${cars.map(car => `
+                                            <tr>
+                                                <td><img src="${car.image}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 5px;"></td>
+                                                <td>${car.name}</td>
+                                                <td>${car.model}</td>
+                                                <td>$${car.price}</td>
+                                                <td>${car.seats}</td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button class="btn btn-info btn-sm" onclick='AdminCars.showEditModal(${JSON.stringify(car)})'>
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" onclick="AdminCars.deleteCar(${car.id})">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add/Edit Modal -->
+                    <div id="carModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 id="modalTitle"><i class="fas fa-car"></i> Add Car</h2>
+                                <span class="close-modal" onclick="AdminCars.closeModal()">&times;</span>
+                            </div>
+                            <form id="carForm" class="booking-form" style="box-shadow: none; padding: 0;">
+                                <input type="hidden" name="id">
+                                <div class="form-group">
+                                    <label><i class="fas fa-car"></i> Car Name</label>
+                                    <input type="text" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-cog"></i> Model</label>
+                                    <input type="text" name="model" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-dollar-sign"></i> Price per Day</label>
+                                    <input type="number" name="price" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-users"></i> Seats</label>
+                                    <input type="number" name="seats" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-image"></i> Image URL</label>
+                                    <input type="url" name="image" required>
+                                </div>
+                                <button type="submit" class="btn btn-success" style="width: 100%;">
+                                    <i class="fas fa-save"></i> Save Car
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static init() {
+                const searchInput = document.getElementById('searchCars');
+                searchInput.addEventListener('input', (e) => {
+                    this.filterCars(e.target.value);
+                });
+
+                const form = document.getElementById('carForm');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveCar(new FormData(form));
+                });
+            }
+
+            static showAddModal() {
+                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus"></i> Add Car';
+                document.getElementById('carForm').reset();
+                document.querySelector('[name="id"]').value = '';
+                document.getElementById('carModal').classList.add('active');
+            }
+
+            static showEditModal(car) {
+                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Car';
+                const form = document.getElementById('carForm');
+                form.querySelector('[name="id"]').value = car.id;
+                form.querySelector('[name="name"]').value = car.name;
+                form.querySelector('[name="model"]').value = car.model;
+                form.querySelector('[name="price"]').value = car.price;
+                form.querySelector('[name="seats"]').value = car.seats;
+                form.querySelector('[name="image"]').value = car.image;
+                document.getElementById('carModal').classList.add('active');
+            }
+
+            static closeModal() {
+                document.getElementById('carModal').classList.remove('active');
+            }
+
+            static saveCar(formData) {
+                let cars = DataManager.getCars();
+                const id = formData.get('id');
+                
+                const carData = {
+                    id: id ? parseInt(id) : generateId(),
+                    name: formData.get('name'),
+                    model: formData.get('model'),
+                    price: parseInt(formData.get('price')),
+                    seats: parseInt(formData.get('seats')),
+                    image: formData.get('image')
+                };
+
+                if (id) {
+                    cars = cars.map(c => c.id == id ? carData : c);
+                    showToast('Car updated successfully!', 'success');
+                } else {
+                    cars.push(carData);
+                    showToast('Car added successfully!', 'success');
+                }
+
+                DataManager.saveCars(cars);
+                this.closeModal();
+                Router.render();
+            }
+
+            static deleteCar(id) {
+                if (confirm('Are you sure you want to delete this car?')) {
+                    let cars = DataManager.getCars();
+                    cars = cars.filter(c => c.id !== id);
+                    DataManager.saveCars(cars);
+                    showToast('Car deleted successfully!', 'success');
+                    Router.render();
+                }
+            }
+
+            static filterCars(query) {
+                const cars = DataManager.getCars();
+                const filtered = cars.filter(car => 
+                    car.name.toLowerCase().includes(query.toLowerCase()) ||
+                    car.model.toLowerCase().includes(query.toLowerCase())
+                );
+                
+                const tbody = document.getElementById('carsTableBody');
+                tbody.innerHTML = filtered.map(car => `
+                    <tr>
+                        <td><img src="${car.image}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 5px;"></td>
+                        <td>${car.name}</td>
+                        <td>${car.model}</td>
+                        <td>$${car.price}</td>
+                        <td>${car.seats}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info btn-sm" onclick='AdminCars.showEditModal(${JSON.stringify(car)})'>
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="AdminCars.deleteCar(${car.id})">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        class AdminBookings {
+            static render() {
+                const bookings = DataManager.getBookings();
+                return `
+                    <div class="admin-container">
+                        ${AdminDashboard.renderSidebar('admin-bookings')}
+                        <div class="admin-content">
+                            <div class="admin-header">
+                                <h1><i class="fas fa-calendar-check"></i> Manage Bookings</h1>
+                                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                    <input type="text" id="searchBookings" class="search-bar" placeholder="Search bookings...">
+                                    <button class="btn btn-danger" onclick="AdminDashboard.logout()">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="data-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Customer</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Car</th>
+                                            <th>Pickup</th>
+                                            <th>Return</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bookingsTableBody">
+                                        ${bookings.map(booking => `
+                                            <tr>
+                                                <td>${booking.name}</td>
+                                                <td>${booking.email}</td>
+                                                <td>${booking.phone}</td>
+                                                <td>${booking.carName}</td>
+                                                <td>${booking.pickupDate}</td>
+                                                <td>${booking.returnDate}</td>
+                                                <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button class="btn btn-success btn-sm" onclick="AdminBookings.updateStatus(${booking.id}, 'approved')">
+                                                            <i class="fas fa-check"></i> Approve
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" onclick="AdminBookings.deleteBooking(${booking.id})">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static init() {
+                const searchInput = document.getElementById('searchBookings');
+                searchInput.addEventListener('input', (e) => {
+                    this.filterBookings(e.target.value);
+                });
+            }
+
+            static updateStatus(id, status) {
+                let bookings = DataManager.getBookings();
+                bookings = bookings.map(b => b.id === id ? { ...b, status } : b);
+                DataManager.saveBookings(bookings);
+                showToast(`Booking ${status}!`, 'success');
+                Router.render();
+            }
+
+            static deleteBooking(id) {
+                if (confirm('Are you sure you want to delete this booking?')) {
+                    let bookings = DataManager.getBookings();
+                    bookings = bookings.filter(b => b.id !== id);
+                    DataManager.saveBookings(bookings);
+                    showToast('Booking deleted successfully!', 'success');
+                    Router.render();
+                }
+            }
+
+            static filterBookings(query) {
+                const bookings = DataManager.getBookings();
+                const filtered = bookings.filter(booking => 
+                    booking.name.toLowerCase().includes(query.toLowerCase()) ||
+                    booking.email.toLowerCase().includes(query.toLowerCase()) ||
+                    booking.carName.toLowerCase().includes(query.toLowerCase())
+                );
+                
+                const tbody = document.getElementById('bookingsTableBody');
+                tbody.innerHTML = filtered.map(booking => `
+                    <tr>
+                        <td>${booking.name}</td>
+                        <td>${booking.email}</td>
+                        <td>${booking.phone}</td>
+                        <td>${booking.carName}</td>
+                        <td>${booking.pickupDate}</td>
+                        <td>${booking.returnDate}</td>
+                        <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-success btn-sm" onclick="AdminBookings.updateStatus(${booking.id}, 'approved')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="AdminBookings.deleteBooking(${booking.id})">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        class AdminUsers {
+            static render() {
+                const users = DataManager.getUsers();
+                return `
+                    <div class="admin-container">
+                        ${AdminDashboard.renderSidebar('admin-users')}
+                        <div class="admin-content">
+                            <div class="admin-header">
+                                <h1><i class="fas fa-users"></i> Manage Users</h1>
+                                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                    <button class="btn btn-success" onclick="AdminUsers.showAddModal()">
+                                        <i class="fas fa-user-plus"></i> Add User
+                                    </button>
+                                    <button class="btn btn-danger" onclick="AdminDashboard.logout()">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="data-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Username</th>
+                                            <th>Role</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${users.map(user => `
+                                            <tr>
+                                                <td>${user.id}</td>
+                                                <td>${user.username}</td>
+                                                <td>${user.role}</td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button class="btn btn-info btn-sm" onclick='AdminUsers.showEditModal(${JSON.stringify(user)})'>
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" onclick="AdminUsers.deleteUser(${user.id})" ${user.id === 1 ? 'disabled' : ''}>
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add/Edit User Modal -->
+                    <div id="userModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 id="userModalTitle"><i class="fas fa-user-plus"></i> Add User</h2>
+                                <span class="close-modal" onclick="AdminUsers.closeModal()">&times;</span>
+                            </div>
+                            <form id="userForm" class="booking-form" style="box-shadow: none; padding: 0;">
+                                <input type="hidden" name="id">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> Username</label>
+                                    <input type="text" name="username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-lock"></i> Password</label>
+                                    <input type="password" name="password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-user-tag"></i> Role</label>
+                                    <select name="role" required>
+                                        <option value="admin">Admin</option>
+                                        <option value="staff">Staff</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success" style="width: 100%;">
+                                    <i class="fas fa-save"></i> Save User
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static init() {
+                const form = document.getElementById('userForm');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveUser(new FormData(form));
+                });
+            }
+
+            static showAddModal() {
+                document.getElementById('userModalTitle').innerHTML = '<i class="fas fa-user-plus"></i> Add User';
+                document.getElementById('userForm').reset();
+                document.querySelector('[name="id"]').value = '';
+                document.getElementById('userModal').classList.add('active');
+            }
+
+            static showEditModal(user) {
+                document.getElementById('userModalTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit User';
+                const form = document.getElementById('userForm');
+                form.querySelector('[name="id"]').value = user.id;
+                form.querySelector('[name="username"]').value = user.username;
+                form.querySelector('[name="password"]').value = user.password;
+                form.querySelector('[name="role"]').value = user.role;
+                document.getElementById('userModal').classList.add('active');
+            }
+
+            static closeModal() {
+                document.getElementById('userModal').classList.remove('active');
+            }
+
+            static saveUser(formData) {
+                let users = DataManager.getUsers();
+                const id = formData.get('id');
+                
+                const userData = {
+                    id: id ? parseInt(id) : generateId(),
+                    username: formData.get('username'),
+                    password: formData.get('password'),
+                    role: formData.get('role')
+                };
+
+                if (id) {
+                    users = users.map(u => u.id == id ? userData : u);
+                    showToast('User updated successfully!', 'success');
+                } else {
+                    users.push(userData);
+                    showToast('User added successfully!', 'success');
+                }
+
+                DataManager.saveUsers(users);
+                this.closeModal();
+                Router.render();
+            }
+
+            static deleteUser(id) {
+                if (id === 1) {
+                    showToast('Cannot delete default admin user!', 'error');
+                    return;
+                }
+                
+                if (confirm('Are you sure you want to delete this user?')) {
+                    let users = DataManager.getUsers();
+                    users = users.filter(u => u.id !== id);
+                    DataManager.saveUsers(users);
+                    showToast('User deleted successfully!', 'success');
+                    Router.render();
+                }
+            }
+        }
+
+        // ============================================
+        // INITIALIZE APP
+        // ============================================
+        window.addEventListener('hashchange', () => Router.render());
+        window.addEventListener('load', () => Router.render());
+    </script>
+</body>
+</html>
